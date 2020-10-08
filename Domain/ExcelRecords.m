@@ -92,7 +92,7 @@ classdef ExcelRecords < handle
                     end
                 end
             else
-                 fprintf('EDF files not found.\n', fileName(i));
+                 fprintf('EDF files not found.\n');
             end
         end
         
