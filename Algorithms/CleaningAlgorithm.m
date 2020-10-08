@@ -1,4 +1,5 @@
 % abstract parent class for cleaning algorithms
+
 classdef (Abstract) CleaningAlgorithm < handle
     properties (Abstract)
         name string
