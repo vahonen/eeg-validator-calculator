@@ -54,7 +54,8 @@ filterList = setAlgorithms(config.filters, 'filter');
 validationAlgorithm = setAlgorithms(config.validators, 'validator');
 cleaningAlgorithm = setAlgorithms(config.cleaners, 'cleaner');
 
-cleaningAlgorithm = {}; % no cleaning, for quick test (for other parts)
+
+%cleaningAlgorithm = {}; % no cleaning, for quick test (for other parts)
 %filterList = {}; % no filtering
 %validationAlgorithm = {}; % no validation
 
