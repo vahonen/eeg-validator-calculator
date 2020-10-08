@@ -8,7 +8,7 @@
 "eventDelay" : 900,
 "useInfoFileLabels" : true,
 "savedObjectName" : "nback_object",
-"overwriteSavedObject" : true,	
+"overwriteSavedObject" : false,	
 "calculators" :
 [
 	{

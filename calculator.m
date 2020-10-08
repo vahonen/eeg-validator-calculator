@@ -132,6 +132,11 @@ else
     savedObjectName = strcat(config.savedObjectName, '_', datestr(now, 'yyyymmdd'), '_', datestr(now,'HHMMSS'));
 end
 
+if ~exist(config.resultsFolder, 'dir')
+    mkdir(config.resultsFolder)
+end
+    
+savedObjectName = fullfile(config.resultsFolder, savedObjectName);
 save(savedObjectName, 'nBackCalculator');
 
 % load n-back metrics e.g. like this:
