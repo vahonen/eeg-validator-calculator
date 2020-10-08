@@ -1,0 +1,24 @@
+{
+"zeroTouch" : true,
+"logfile" : "calculator_logfile.txt",
+"sourceFolder" : "Test2",
+"resultsFolder": "Results",
+"timezone" : "Europe/Helsinki",
+"eventAdvance" : 100,
+"eventDelay" : 900,
+"useInfoFileLabels" : true,
+"savedObjectName" : "nback_object",
+"overwriteSavedObject" : true,	
+"calculators" :
+[
+	{
+		"calculator" : "AlgPsdCalculator",
+		"parameters" : {
+			"type" : "'type not defined'",
+			"calculationType" : "'channel'"
+		}
+	}
+	
+]
+
+}
