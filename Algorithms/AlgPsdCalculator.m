@@ -1,4 +1,4 @@
-classdef AlgPsdCalculator < handle
+classdef AlgPsdCalculator < CalculationAlgorithm
     properties
         name = 'PSD calculator'
         algName = 'AlgPsdCalculator'
