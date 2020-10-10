@@ -84,6 +84,7 @@ for jj = 1:numel(recordingList) % loop through recordings
             fprintf("Info file labels to be used but info file is not available. Using labels from edf file.\n");
         else
             labels = readLabelsFromInfo(fullfile(folder, infoFile));
+            header.label = labels;
         end
     end
     

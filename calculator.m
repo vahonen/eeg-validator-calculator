@@ -14,6 +14,15 @@ zeroTouch = config.zeroTouch;
 % zeroTouch = true => load (first found) excel file in working dir and use default_config.json for
 % configuration
 
+if (~zeroTouch)
+    edfDir = uigetdir(pwd, 'Select EDF directory (all subdirectories will be included)');
+    [configFile, configPath] = uigetfile({'*.json'},...
+        'Select configuration file');
+    config = jsondecode(fileread(fullfile(configPath, configFile)));
+else
+    edfDir = fullfile(pwd, config.sourceFolder);
+end
+
 % save output to logfile (with overwrite, i.e. delete previous file)
 logfile = config.logfile;
 
@@ -30,12 +39,6 @@ fprintf("Calculator started\n");
 fprintf("%s\n", datetime('now','TimeZone',config.timezone,'Format','yyyy-MM-dd''T''HH:mm:ss.SSSZ'));
 
 tic % start stopwatch timer
-
-if (~zeroTouch)
-    edfDir = uigetdir(pwd, 'Select EDF directory (all subdirectories will be included)');
-else
-    edfDir = fullfile(pwd, config.sourceFolder);
-end
 
 fprintf("Selected directory: %s\n", edfDir);
 
@@ -132,13 +135,15 @@ else
     savedObjectName = strcat(config.savedObjectName, '_', datestr(now, 'yyyymmdd'), '_', datestr(now,'HHMMSS'));
 end
 
+savedObjectName = strcat(savedObjectName,'.mat');
+
 if ~exist(config.resultsFolder, 'dir')
     mkdir(config.resultsFolder)
 end
     
 savedObjectName = fullfile(config.resultsFolder, savedObjectName);
 save(savedObjectName, 'nBackCalculator');
-
+fprintf('nBackCalculator object stored in: %s\n', savedObjectName);
 % load n-back metrics e.g. like this:
 % x = load('nback_object.mat'); % or whatever the mat-file name is
 % nBackCalculator = x.nBackCalculator;
