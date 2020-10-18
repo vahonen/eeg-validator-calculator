@@ -5,3 +5,6 @@
 **/Results
 *.asv
 *.xls*
+*test*
+*.pdf
+**/Backups

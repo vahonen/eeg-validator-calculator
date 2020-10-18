@@ -12,10 +12,20 @@
 "calculators" :
 [
 	{
-		"calculator" : "AlgPsdCalculator",
+		"calculator" : "AlgMscCalculator",
 		"parameters" : {
 			"type" : "'type not defined'",
-			"calculationType" : "'channel'"
+			"calculationType" : "'recording'",
+			"freqRange": "[8 12]",
+			"freqStep" : "0.5"
+		}
+	},
+	
+	{
+		"calculator" : "AlgCliCalculator",
+		"parameters" : {
+			"type" : "'type not defined'",
+			"calculationType" : "'event'"
 		}
 	}
 	

@@ -26,7 +26,7 @@ classdef NBackCalculator < handle
                                 if (processChannel(jj))
                                     fprintf("Calculation for channel %s ongoing.\n", recording.channel(jj).label);
                                     nPrev = -1;
-                                    counter = 1;
+                                    counter = 1; % could counter(n) be better choice (n=1...5 (0-back...4-back))?
                                     for k = 1 : numel(recording.channel(jj).validEvents)
                                         
                                         samples = recording.channel(jj).samples;
@@ -91,10 +91,14 @@ classdef NBackCalculator < handle
                             end
                             
                         case 'recording'
-                            % calculate per recording
-                            % ...
-                            % tmpResult = self.calculationAlgorithm{i}.calculateRecording(recording)
-                            % % self.nBackResults.algorithm(i).nBack(n).result = tmpResult
+                            % calculate per recording 
+                            for n = 1:5 % 1=nback_0, ..., 5= nback_4
+                                fprintf("Calculating metrics for n-back: %d\n", n-1);
+                                tmpResult = self.calculationAlgorithm{i}.calculateRecording(recording, n-1, processChannel);
+                                self.nBackResults.algorithm(i).nBack(n).result = tmpResult;
+                                self.nBackResults.algorithm(i).nBack(n).channelLabels = {recording.channel.label};
+                            end
+                           
                         otherwise
                             error("Unknown calculation type '%s' defined for '%s' in json.", self.calculationAlgorithm{i}.calculationType, self.calculationAlgorithm{i}.algName);
                     end

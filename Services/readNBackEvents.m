@@ -73,6 +73,7 @@ for i = 1:numel(line)
                 nBackEvents(counter).delay = 0;
             end
             nBackEvents(counter).sampleRange = []; % to be filled in validation phase (validateEvents.m)
+            nBackEvents(counter).eventNumber = counter; %
             counter = counter + 1;
         end
     end

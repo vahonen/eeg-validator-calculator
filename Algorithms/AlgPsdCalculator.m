@@ -18,7 +18,7 @@ classdef AlgPsdCalculator < CalculationAlgorithm
         function result = calculateEvent(self, samples, sampleRate)
             
             %[pxx,f] = pwelch(samples', hamming(64), 32, 256, sampleRate);
-            [pxx, ~] = pwelch((samples' - mean(samples)), hamming(128), 64, 0:0.5:49.5, sampleRate);
+            [pxx, ~] = pwelch((samples' - mean(samples)), hamming(256), 128, 0:0.5:49.5, sampleRate);
             result = pxx/sum(pxx);
             %result = mean(samples); %just for testing
         end

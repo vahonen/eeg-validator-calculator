@@ -17,7 +17,7 @@ zeroTouch = config.zeroTouch;
 if (~zeroTouch)
     edfDir = uigetdir(pwd, 'Select EDF directory (all subdirectories will be included)');
     [configFile, configPath] = uigetfile({'*.json'},...
-        'Select configuration file');
+        'Select configuration file')
     config = jsondecode(fileread(fullfile(configPath, configFile)));
 else
     edfDir = fullfile(pwd, config.sourceFolder);
