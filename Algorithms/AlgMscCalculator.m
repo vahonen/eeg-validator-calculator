@@ -58,7 +58,7 @@ classdef AlgMscCalculator < CalculationAlgorithm
                                     recording.channel(c).samples(range(1,1):range(1,2)), [], [], ...
                                     self.freqRange(1):self.freqStep:self.freqRange(2), sampleRate);
                                 
-                                totalCxy = [totalCxy sum(cxy)/numel(cxy)];
+                                totalCxy = [totalCxy mean(cxy)];
                             end
                         end
                             
