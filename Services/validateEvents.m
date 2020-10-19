@@ -7,6 +7,10 @@ function validEvents = validateEvents(gameEvents, startTime, channelData, eventA
 counter = 1;
 dtStartTime = datetime(string(startTime), 'InputFormat','yy-MM-dd''T''HH:mm:ss.SSSSSS');
 sampleRate = channelData.sampleRate;
+if (isempty(gameEvents))
+    fprintf("###### No events in game log or events are not in correct format.\n");
+    validEvents = {};
+end
 for i = 1:numel(gameEvents)
     % timestamp format (ISO8601); '2017-04-07T14:25:14.685451'
     evTimestamp = gameEvents(i).timestamp;

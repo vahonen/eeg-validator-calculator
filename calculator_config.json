@@ -1,7 +1,7 @@
 {
 "zeroTouch" : true,
 "logfile" : "calculator_logfile.txt",
-"sourceFolder" : "Test2",
+"sourceFolder" : "Cleaned",
 "resultsFolder": "Results",
 "timezone" : "Europe/Helsinki",
 "eventAdvance" : 100,
