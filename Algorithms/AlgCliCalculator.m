@@ -30,14 +30,19 @@ classdef AlgCliCalculator < CalculationAlgorithm
                 self.thetaRange(1,2), sampleRate);
             %result = pxx/sum(pxx);
             
-            aPowerTot = fA*pxxA';
-            tPowerTot = fT*pxxT';
+           
+            %aPowerTot = fA*pxxA'; % or maybe not... should be calculated per freq bin
+            %tPowerTot = fT*pxxT'; % or maybe not... should be calculated per freq bin
+            
+            aPowerTot = sum(pxxA); %sum(freqStep * pxxA) = freqStep*sum(pxxA)
+            tPowerTot = sum(pxxT);  %sum(freqStep * pxxT) = freqStep*sum(pxxT)
+            % => in CLI ratio, freqStep gets canceled
             
             if (aPowerTot > 0)
-                result = tPowerTot/aPowerTot;
+                result = tPowerTot/aPowerTot; % CLI
             else
                 result = 0;
-                fprintf('###### AlgCliCalculator: aPower = 0 => result set to 0.\n');
+                fprintf('###### AlgCliCalculator: aPowerTot = 0 => result set to 0.\n');
             end
         end
         
