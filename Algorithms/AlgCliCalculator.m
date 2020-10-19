@@ -4,12 +4,18 @@ classdef AlgCliCalculator < CalculationAlgorithm
         algName = 'AlgCliCalculator'
         type = ''
         calculationType = ''
+        alphaRange % frequency range for denominator in CLI
+        thetaRange % frequency range for numerator in CLI
+        freqStep % frequency step within freq range
     end
     
     methods
-        function this = AlgCliCalculator(type, calculationType)
+        function this = AlgCliCalculator(type, calculationType, alphaRange, thetaRange, freqStep)
             this.type = type;
             this.calculationType = calculationType;
+            this.alphaRange = alphaRange;
+            this.thetaRange = thetaRange;
+            this.freqStep = freqStep;
         end
     end
     
@@ -18,25 +24,20 @@ classdef AlgCliCalculator < CalculationAlgorithm
         function result = calculateEvent(self, samples, sampleRate)
             
             %[pxx,f] = pwelch(samples', hamming(64), 32, 256, sampleRate);
-            [pxx, ~] = pwelch((samples' - mean(samples)), hamming(256), 128, 0:0.5:49.5, sampleRate);
-            result = pxx/sum(pxx);
+            [pxxA, fA] = pwelch((samples' - mean(samples)), hamming(256), 128, self.alphaRange(1,1):self.freqStep: ...
+                self.alphaRange(1,2), sampleRate);
+            [pxxT, fT] = pwelch((samples' - mean(samples)), hamming(256), 128, self.thetaRange(1,1):self.freqStep: ...
+                self.thetaRange(1,2), sampleRate);
+            %result = pxx/sum(pxx);
             
-            theta = 0;
-            alpha = 0;
-            for i = 4:8
-                theta = theta + 0.5*result(i*2);
-            end
+            aPowerTot = fA*pxxA';
+            tPowerTot = fT*pxxT';
             
-            for i = 8:12
-                alpha = alpha + 0.5*result(i*2);
-            end
-            
-            if (alpha > 0)
-                result = theta/alpha;
+            if (aPowerTot > 0)
+                result = tPowerTot/aPowerTot;
             else
                 result = 0;
-                fprintf('###### AlgCliCalculator: alpha gives 0 => result set to 0.');
-                %result = mean(samples); %just for testing
+                fprintf('###### AlgCliCalculator: aPower = 0 => result set to 0.\n');
             end
         end
         

@@ -11,21 +11,16 @@
 "overwriteSavedObject" : true,	
 "calculators" :
 [
-	{
-		"calculator" : "AlgMscCalculator",
-		"parameters" : {
-			"type" : "'type not defined'",
-			"calculationType" : "'recording'",
-			"freqRange": "[8 12]",
-			"freqStep" : "0.5"
-		}
-	},
+	
 	
 	{
 		"calculator" : "AlgCliCalculator",
 		"parameters" : {
 			"type" : "'type not defined'",
-			"calculationType" : "'event'"
+			"calculationType" : "'event'",
+			"alphaRange" : "[8 12]",
+			"thetaRange" : "[4 8]",
+			"freqStep" : "0.5"
 		}
 	}
 	

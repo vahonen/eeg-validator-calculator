@@ -96,6 +96,8 @@ classdef NBackCalculator < handle
                                 fprintf("Calculating metrics for n-back: %d\n", n-1);
                                 tmpResult = self.calculationAlgorithm{i}.calculateRecording(recording, n-1, processChannel);
                                 self.nBackResults.algorithm(i).nBack(n).result = tmpResult;
+                                %self.nBackResults.algorithm(i).nBack(n).result = array2table(tmpResult,'VariableNames',{recording.channel.label}, ...
+                                %    'RowNames', {recording.channel.label});
                                 self.nBackResults.algorithm(i).nBack(n).channelLabels = {recording.channel.label};
                             end
                            
