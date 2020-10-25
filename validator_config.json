@@ -1,0 +1,56 @@
+{
+"zeroTouch" : true,
+"logfile" : "logfile.txt",
+"timezone" : "Europe/Helsinki",
+"cleanedFolder" : "Cleaned",
+"dropXChannels" : false,
+"epochTime" : 1,
+"overlapPercent" : 50,
+"setArtefactsToZero" : false,
+"overwriteCleanedRecordings" : true,
+"createXmlAnnotations" : {
+	"artefacts" : true,
+	"stimulus" : true
+},
+"useInfoFileLabels" : true,
+
+
+"filters" : 
+[
+	{
+		"filter" : "PMFilter",
+		"parameters" : {
+			"type" : "'Band Pass'",
+			"frequencyBandEdges" : "[0, 1, 44, 45]",
+			"desiredAmplitude" : "[0, 1,  0]",
+			"maxAllowedDev" : "[0.05, 0.05, 0.05]",
+			"sampleRate" : "0"
+		}
+	}
+],
+"validators" :
+[
+	{
+		"validator" : "AlgChannelValidator",
+		"parameters" : {
+			"type" : "'basic, devCoef=2'",
+			"devCoef": "2"
+			
+		}
+	}
+],
+
+"cleaners" :
+[
+	{
+		"cleaner" : "AlgWaveletCleaner",
+		"parameters" : {
+			"type" : "'db2'",
+			"thCoef" : "2.5",
+			"windowSize" : "10",
+			"level" : "10"
+		}
+	}
+]
+	
+}

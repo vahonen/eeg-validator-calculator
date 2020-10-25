@@ -11,7 +11,7 @@ addpath('./Algorithms');
 addpath('./Filters');
 
 % read default configuration from deafult_config.json file
-config = jsondecode(fileread('default_config.json'));
+config = jsondecode(fileread('validator_config.json'));
 zeroTouch = config.zeroTouch;
 
 % zeroTouch = false => ask user for excel file and configuration file
@@ -56,7 +56,7 @@ cleaningAlgorithm = setAlgorithms(config.cleaners, 'cleaner');
 
 %cleaningAlgorithm = {}; % no cleaning, for quick test (for other parts)
 %filterList = {}; % no filtering
-%validationAlgorithm = {}; % no validation
+validationAlgorithm = {}; % no validation
 
 % create excelRecords object for reading file names
 excelRecords = ExcelRecords(excelPath, excelFile, config.dropXChannels);

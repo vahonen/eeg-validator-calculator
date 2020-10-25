@@ -30,7 +30,7 @@ classdef AlgCliCalculator < CalculationAlgorithm
                 self.thetaRange(1,2), sampleRate);
             %result = pxx/sum(pxx);
             
-           
+            
             %aPowerTot = fA*pxxA'; % or maybe not... should be calculated per freq bin
             %tPowerTot = fT*pxxT'; % or maybe not... should be calculated per freq bin
             
@@ -39,7 +39,7 @@ classdef AlgCliCalculator < CalculationAlgorithm
             % => in CLI ratio, freqStep gets canceled
             
             if (aPowerTot > 0)
-                result = tPowerTot/aPowerTot; % CLI
+                result = tPowerTot/aPowerTot; % CLI.. should it be frontal theta / parietal alpha ?
             else
                 result = 0;
                 fprintf('###### AlgCliCalculator: aPowerTot = 0 => result set to 0.\n');
@@ -56,10 +56,51 @@ classdef AlgCliCalculator < CalculationAlgorithm
             result = mean(pxxMatrix);
         end
         
-        % calculate over one recording (maybe not reasonable for PSD)
-        % but using same structure for all calculation algorithms
-        function result = calculateRecording(self, recording)
-            result = 0;
+        % calculate CLI between channels
+        function result = calculateRecording(self, recording, n, processChannel)
+            M ={};
+            for r = 1 : numel(recording.channel)
+                for c = 1 : numel(recording.channel)
+                    if (processChannel(r) && processChannel(c))
+                        eventCli = [];
+                        for ev = 1:numel(recording.channel(r).validEvents)
+                            otherEventNbrs = vertcat(recording.channel(r).validEvents(:).eventNumber);
+                            % collect valid event numbers for other channel
+                            sampleRate = recording.channel(r).sampleRate;
+                            
+                            if (recording.channel(r).validEvents(ev).n == n ...
+                                    && ismember(recording.channel(r).validEvents(ev).eventNumber, otherEventNbrs))
+                                % n is matching and other channel is also
+                                % valid for current event segment
+                                
+                                range = recording.channel(r).validEvents(ev).sampleRange;
+                                
+                                aSamples = recording.channel(r).samples(range(1,1):range(1,2));
+                                tSamples = recording.channel(c).samples(range(1,1):range(1,2));
+                                
+                                [pxxA, fA] = pwelch((aSamples' - mean(aSamples)), hamming(256), 128, self.alphaRange(1,1):self.freqStep: ...
+                                    self.alphaRange(1,2), sampleRate);
+                                [pxxT, fT] = pwelch((tSamples' - mean(tSamples)), hamming(256), 128, self.thetaRange(1,1):self.freqStep: ...
+                                    self.thetaRange(1,2), sampleRate);
+                                
+                                aPowerTot = sum(pxxA); %sum(freqStep * pxxA) = freqStep*sum(pxxA)
+                                tPowerTot = sum(pxxT);  %sum(freqStep * pxxT) = freqStep*sum(pxxT)
+                                % => in CLI ratio, freqStep gets canceled
+                                
+                                if (aPowerTot > 0)
+                                    eventCli = [eventCli tPowerTot/aPowerTot]; % CLI
+                                else
+                                    eventCli = [eventCli 0];
+                                    fprintf('###### AlgCliCalculator: aPowerTot = 0 => eventCli value set to 0.\n');
+                                end
+                            end
+                        end % for ev = ...
+                        M{r,c} = eventCli; % CLI values for events (ch "r" / ch "c")
+                    end 
+                end
+            end
+            
+            result = M;
         end
     end
 end

@@ -41,7 +41,7 @@ classdef AlgMscCalculator < CalculationAlgorithm
                     if (processChannel(r) && processChannel(c) && r ~= c) 
                         % both channels are processed? if r=c => MSC=1, no need to calculate
                         
-                        otherEventNbrs = vertcat(recording.channel(r).validEvents(:).eventNumber);
+                        otherEventNbrs = vertcat(recording.channel(c).validEvents(:).eventNumber);
                         % collect valid event numbers for other channel
                         
                         sampleRate = recording.channel(r).sampleRate;
