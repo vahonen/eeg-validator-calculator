@@ -16,7 +16,7 @@
 	{
 		"calculator" : "AlgCliCalculator",
 		"parameters" : {
-			"type" : "'alpha_Power/theta_Power (alpha: 8-12 Hz, theta: 4-8 Hz)'",
+			"type" : "'theta_Power/alpha_Power (theta: 4-8 Hz, alpha: 8-12 Hz)'",
 			"calculationType" : "'recording'",
 			"alphaRange" : "[8 12]",
 			"thetaRange" : "[4 8]",
