@@ -1,0 +1,28 @@
+{
+"zeroTouch" : true,
+"logfile" : "calculator_logfile.txt",
+"sourceFolder" : "Test2",
+"resultsFolder": "Results2",
+"timezone" : "Europe/Helsinki",
+"eventAdvance" : 100,
+"eventDelay" : 900,
+"useInfoFileLabels" : true,
+"savedObjectName" : "nback_object",
+"overwriteSavedObject" : true,	
+"calculators" :
+[
+	
+	
+	{
+		"calculator" : "AlgPacCalculator",
+		"parameters" : {
+			"type" : "'mean'",
+			"calculationType" : "'recording'",
+			"lowFreqRange" : "[4 8]",
+			"highFreqRange" : "[8 35]"
+		}
+	}
+	
+]
+
+}

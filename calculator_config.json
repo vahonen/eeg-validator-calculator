@@ -1,5 +1,5 @@
 {
-"zeroTouch" : true,
+"zeroTouch" : false,
 "logfile" : "calculator_logfile.txt",
 "sourceFolder" : "Cleaned",
 "resultsFolder": "Results",

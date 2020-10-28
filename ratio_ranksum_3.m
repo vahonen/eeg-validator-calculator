@@ -56,50 +56,65 @@ end
 
 %return
 
-xlsFileName = 'testi_inter_ch_2020.xlsx';
+xlsFileName = 'testi_inter_ch_2020_1.xlsx';
 
 warning('off', 'MATLAB:xlswrite:AddSheet');
 
 sheet = 1;
+% for reg = startRec:recs
+%     fprintf('Filling Excel for recording: %s\n', nBackCalculator(reg).recordingName);
+%     row = 1;
+%
+%     recName = string(nBackCalculator(reg).recordingName);
+%     header = {recName, '1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
+%
+%     for i = 1:numel(header)
+%         solu = strcat(char(char('A')+i-1), num2str(row));
+%         writematrix(string(header{i}), xlsFileName, 'Sheet', sheet, 'Range', solu);
+%     end
+%
+%     row = row + 1;
+%     for rCh = startCh:startCh+chCount-1
+%         for cCh = startCh:startCh+chCount-1
+%             solu = strcat('A', num2str(row));
+%             writematrix(string(channelLabels{reg}{rCh}+"/"+channelLabels{reg}{cCh}), xlsFileName, 'Sheet', sheet, 'Range', solu);
+%             for i = 1:6
+%                 solu = strcat(char(65 + i), num2str(row));
+%                 writematrix(squeeze(p(reg, rCh, cCh, i)), xlsFileName, 'Sheet', sheet, 'Range', solu);
+%             end
+%             row = row + 1;
+%         end
+%     end
+%     sheet = sheet + 1;
+% end
+
+Excel = actxserver('excel.application');
+%WB = Excel.Workbooks.Open(fullfile(pwd, xlsFileName),0,false);
+WB = Excel.Workbooks.Add;
+
+fprintf('Constructing Excel: %s \n', xlsFileName);
 for reg = startRec:recs
+    sheet = 1;
     fprintf('Filling Excel for recording: %s\n', nBackCalculator(reg).recordingName);
     row = 1;
-    
     recName = string(nBackCalculator(reg).recordingName);
     header = {recName, '1vs2', '1vs3', '1vs4', '2vs3', '2vs4', '3vs4'};
     
     for i = 1:numel(header)
         solu = strcat(char(char('A')+i-1), num2str(row));
-        writematrix(string(header{i}), xlsFileName, 'Sheet', sheet, 'Range', solu);
+        WB.Worksheets.Item(sheet).Range(solu).value = string(header{i});
     end
     
-    row = row + 1;
     for rCh = startCh:startCh+chCount-1
         for cCh = startCh:startCh+chCount-1
+            row = row + 1;
+            
             solu = strcat('A', num2str(row));
-            writematrix(string(channelLabels{reg}{rCh}+"/"+channelLabels{reg}{cCh}), xlsFileName, 'Sheet', sheet, 'Range', solu);
-            for i = 1:6
-                solu = strcat(char(65 + i), num2str(row));
-                writematrix(squeeze(p(reg, rCh, cCh, i)), xlsFileName, 'Sheet', sheet, 'Range', solu);
-            end
-            row = row + 1;
-        end
-    end
-    sheet = sheet + 1;
-end
-
-Excel = actxserver('excel.application');
-WB = Excel.Workbooks.Open(fullfile(pwd, xlsFileName),0,false);
-
-sheet = 1;
-for reg = startRec:recs
-    fprintf('Marking Excel for recording: %s\n', nBackCalculator(reg).recordingName);
-    row = 1;
-    for rCh = startCh:startCh+chCount-1
-        for cCh = startCh:startCh+chCount-1
-            row = row + 1;
+            WB.Worksheets.Item(sheet).Range(solu).value = string(channelLabels{reg}{rCh}+"/"+channelLabels{reg}{cCh});
+            
             for n = 1:6
                 solu = strcat(char(65 + n), num2str(row));
+                WB.Worksheets.Item(sheet).Range(solu).value = squeeze(p(reg, rCh, cCh, n));
                 if (squeeze(p(reg, rCh, cCh, n)) < 0.01) && (squeeze(h(reg, rCh, cCh, n)) == 1)
                     WB.Worksheets.Item(sheet).Range(solu).Interior.ColorIndex = 33;
                 elseif (squeeze(p(reg, rCh, cCh, n)) < 0.01) && (squeeze(h(reg, rCh, cCh, n)) == -1)
@@ -108,6 +123,7 @@ for reg = startRec:recs
             end
         end
     end
+    WB.Worksheets.Add();    
     sheet = sheet + 1;
 end
 
