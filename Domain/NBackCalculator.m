@@ -94,13 +94,17 @@ classdef NBackCalculator < handle
                             % calculate per recording 
                             for n = 1:5 % 1=nback_0, ..., 5= nback_4
                                 fprintf("Calculating metrics for n-back: %d\n", n-1);
-                                tmpResult = self.calculationAlgorithm{i}.calculateRecording(recording, n-1, processChannel);
-                                self.nBackResults.algorithm(i).nBack(n).result = tmpResult;
-                                %self.nBackResults.algorithm(i).nBack(n).result = array2table(tmpResult,'VariableNames',{recording.channel.label}, ...
-                                %    'RowNames', {recording.channel.label});
-                                self.nBackResults.algorithm(i).nBack(n).channelLabels = {recording.channel.label};
+                                %if (ismember(n-1, vertcat(recording.channel(1).validEvents.n)))%something more reliable needed
+                                    %fprintf("\n");
+                                    tmpResult = self.calculationAlgorithm{i}.calculateRecording(recording, n-1, processChannel);
+                                    self.nBackResults.algorithm(i).nBack(n).result = tmpResult;
+                                    %self.nBackResults.algorithm(i).nBack(n).result = array2table(tmpResult,'VariableNames',{recording.channel.label}, ...
+                                    %    'RowNames', {recording.channel.label});
+                                    self.nBackResults.algorithm(i).nBack(n).channelLabels = {recording.channel.label};
+                                %else
+                                %    fprintf(" <- nothing here\n");
+                                %end
                             end
-                           
                         otherwise
                             error("Unknown calculation type '%s' defined for '%s' in json.", self.calculationAlgorithm{i}.calculationType, self.calculationAlgorithm{i}.algName);
                     end

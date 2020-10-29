@@ -1,7 +1,7 @@
 {
 "zeroTouch" : true,
 "logfile" : "calculator_logfile.txt",
-"sourceFolder" : "Test2",
+"sourceFolder" : "Test4",
 "resultsFolder": "Results2",
 "timezone" : "Europe/Helsinki",
 "eventAdvance" : 100,
@@ -19,7 +19,10 @@
 			"type" : "'event'",
 			"calculationType" : "'recording'",
 			"lowFreqRange" : "[4 8]",
-			"highFreqRange" : "[8 35]"
+			"highFreqRange" : "[8 35]",
+			"transBandWidth" : "1",
+			"desiredAmplitude" : "[0, 1, 0]",
+			"maxAllowedDev" : "[0.05 0.05 0.05]"
 		}
 	}
 	
