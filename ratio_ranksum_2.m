@@ -9,16 +9,16 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-load('./Results/nback_object_CLI_intra_and_inter_ch_all_recs_1.mat'); %nBackCalculator
+load('./Results2/nback_object_pac_event.mat'); %nBackCalculator
 
 recs = numel(nBackCalculator); % all recordings
 %recs = 12; % 1-12 are 2019 recordings (eeeeeecx), 13-20 are 2020:
 % 13-18 recordings (cceeeeeexx....), 20 chs (6 EEG)
 % 19-20 (eee...ex), 20 chs (19 EEG)
-startRec = 19;
+startRec = 1;
 
 startCh = 1;
-chCount = 19;
+chCount = 6;
 
 p = zeros(recs, chCount, chCount, 6);
 h = zeros(size(p));
@@ -56,7 +56,7 @@ end
 
 %return
 
-xlsFileName = 'testi_inter_ch_2020.xlsx';
+xlsFileName = 'testi_2019_G1_PAC.xlsx';
 
 warning('off', 'MATLAB:xlswrite:AddSheet');
 

@@ -32,12 +32,11 @@ classdef AlgPacCalculator < CalculationAlgorithm
         
         % calculate over one recording
         function result = calculateRecording(self, recording, n, processChannel)
-            % calculation method could be configurable with 'type' parameter
-            if(strcmp(self.type, 'mean'))
-                M = zeros(numel(recording.channel), numel(recording.channel)); % average PAC of events
-            else
-                M = {}; % PAC stored per event
-            end
+            % calculation method configurable with 'type' parameter (mean,
+            % event, median)
+            
+            M = {};
+           
             
             for r = 1 : numel(recording.channel)
                 for c = 1 : numel(recording.channel)
@@ -87,10 +86,13 @@ classdef AlgPacCalculator < CalculationAlgorithm
                         end
                         
                         if ~isempty(pac)
-                            if(strcmp(self.type, 'mean'))
-                                M(r,c) = mean(pac); % average PAC of events
-                            else
-                                M{r,c} = pac; % PAC stored per event
+                            switch self.type
+                                case 'mean' % not quite necessary? could be post-prosessed from event specific PACs
+                                    M{r,c} = mean(pac); % average PAC of events
+                                case 'median' % not quite necessary? could be post-prosessed from event specific PACs
+                                    M{r,c} = median(pac); % median PAC of events
+                                otherwise
+                                    M{r,c} = pac; % PAC per event
                             end
                         end
                         

@@ -16,7 +16,7 @@
 	{
 		"calculator" : "AlgPacCalculator",
 		"parameters" : {
-			"type" : "'mean'",
+			"type" : "'event'",
 			"calculationType" : "'recording'",
 			"lowFreqRange" : "[4 8]",
 			"highFreqRange" : "[8 35]"
