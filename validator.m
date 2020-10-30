@@ -56,7 +56,7 @@ cleaningAlgorithm = setAlgorithms(config.cleaners, 'cleaner');
 
 %cleaningAlgorithm = {}; % no cleaning, for quick test (for other parts)
 %filterList = {}; % no filtering
-validationAlgorithm = {}; % no validation
+%validationAlgorithm = {}; % no validation
 
 % create excelRecords object for reading file names
 excelRecords = ExcelRecords(excelPath, excelFile, config.dropXChannels);

@@ -1,10 +1,11 @@
 clc
-%clear all
+clear all
 close all
 
 addpath('./Services');
 addpath('./Domain');
 addpath('./Algorithms');
+addpath('./Filters');
 
 % read default configuration from calculator_config.json file
 config = jsondecode(fileread('calculator_config.json'));
@@ -17,7 +18,7 @@ zeroTouch = config.zeroTouch;
 if (~zeroTouch)
     edfDir = uigetdir(pwd, 'Select EDF directory (all subdirectories will be included)');
     [configFile, configPath] = uigetfile({'*.json'},...
-        'Select configuration file')
+        'Select configuration file');
     config = jsondecode(fileread(fullfile(configPath, configFile)));
 else
     edfDir = fullfile(pwd, config.sourceFolder);
