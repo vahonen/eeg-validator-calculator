@@ -1,8 +1,8 @@
 {
 "zeroTouch" : true,
 "logfile" : "calculator_logfile.txt",
-"sourceFolder" : "Test2",
-"resultsFolder": "Results2",
+"sourceFolder" : "Cleaned",
+"resultsFolder": "Results3",
 "timezone" : "Europe/Helsinki",
 "eventAdvance" : 100,
 "eventDelay" : 900,
@@ -14,14 +14,13 @@
 	
 	
 	{
-		"calculator" : "AlgPacCalculator",
+		"calculator" : "AlgCliCalculator",
 		"parameters" : {
-			"type" : "'event'",
-			"calculationType" : "'recording'",
-			"lowFreqRange" : "[0 4]",
-			"highFreqRange" : "[8 12]",
-			"transBandWidth" : "1",
-			"maxAllowedDev" : "[0.05 0.05 0.05]"
+			"type" : "'theta_Power/alpha_Power (theta: 4-8 Hz, alpha: 8-12 Hz)'",
+			"calculationType" : "'event'",
+			"alphaRange" : "[8 12]",
+			"thetaRange" : "[4 8]",
+			"freqStep" : "0.5"
 		}
 	}
 	
