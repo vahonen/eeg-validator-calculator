@@ -7,15 +7,19 @@ classdef AlgCliCalculator < CalculationAlgorithm
         alphaRange % frequency range for denominator in CLI
         thetaRange % frequency range for numerator in CLI
         freqStep % frequency step within freq range
+        windowLength % length of window
+        overlap % number of overlapping samples for windowing
     end
     
     methods
-        function this = AlgCliCalculator(type, calculationType, alphaRange, thetaRange, freqStep)
+        function this = AlgCliCalculator(type, calculationType, alphaRange, thetaRange, freqStep, windowLength, overlap)
             this.type = type;
             this.calculationType = calculationType;
             this.alphaRange = alphaRange;
             this.thetaRange = thetaRange;
             this.freqStep = freqStep;
+            this.windowLength = windowLength;
+            this.overlap = overlap;
         end
     end
     
@@ -24,9 +28,9 @@ classdef AlgCliCalculator < CalculationAlgorithm
         function result = calculateEvent(self, samples, sampleRate)
             
             %[pxx,f] = pwelch(samples', hamming(64), 32, 256, sampleRate);
-            [pxxA, fA] = pwelch((samples' - mean(samples)), hamming(256), 128, self.alphaRange(1,1):self.freqStep: ...
+            [pxxA, fA] = pwelch((samples' - mean(samples)), hamming(self.windowLength), self.overlap, self.alphaRange(1,1):self.freqStep: ...
                 self.alphaRange(1,2), sampleRate);
-            [pxxT, fT] = pwelch((samples' - mean(samples)), hamming(256), 128, self.thetaRange(1,1):self.freqStep: ...
+            [pxxT, fT] = pwelch((samples' - mean(samples)), hamming(self.windowLength), self.overlap, self.thetaRange(1,1):self.freqStep: ...
                 self.thetaRange(1,2), sampleRate);
             %result = pxx/sum(pxx);
             
@@ -50,7 +54,7 @@ classdef AlgCliCalculator < CalculationAlgorithm
         function result = calculateChannel(self, channel, epochs)
             for i = 1 : size(epochs, 1)
                 samples = channel.samples(epochs(i, 1) : epochs(i, 2));
-                [pxx,f] = pwelch(samples', hamming(128), 64, 0:0.5:49.5, channel.sampleRate);
+                [pxx,f] = pwelch(samples', hamming(self.windowLength), self.overlap, 0:0.5:49.5, channel.sampleRate);
                 pxxMatrix(i,:) = pxx/sum(pxx);
             end
             result = mean(pxxMatrix);
@@ -78,9 +82,9 @@ classdef AlgCliCalculator < CalculationAlgorithm
                                 aSamples = recording.channel(r).samples(range(1,1):range(1,2));
                                 tSamples = recording.channel(c).samples(range(1,1):range(1,2));
                                 
-                                [pxxA, fA] = pwelch((aSamples' - mean(aSamples)), hamming(256), 128, self.alphaRange(1,1):self.freqStep: ...
+                                [pxxA, fA] = pwelch((aSamples' - mean(aSamples)), hamming(self.windowLength), self.overlap, self.alphaRange(1,1):self.freqStep: ...
                                     self.alphaRange(1,2), sampleRate);
-                                [pxxT, fT] = pwelch((tSamples' - mean(tSamples)), hamming(256), 128, self.thetaRange(1,1):self.freqStep: ...
+                                [pxxT, fT] = pwelch((tSamples' - mean(tSamples)), hamming(self.windowLength), self.overlap, self.thetaRange(1,1):self.freqStep: ...
                                     self.thetaRange(1,2), sampleRate);
                                 
                                 aPowerTot = sum(pxxA); %sum(freqStep * pxxA) = freqStep*sum(pxxA)

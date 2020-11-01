@@ -9,7 +9,7 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-load('./Results3/nback_object_2019_2020_intra_ch_cli.mat'); %nBackCalculator
+load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64.mat'); %nBackCalculator
 
 recs = numel(nBackCalculator); % all recordings
 % recs = 12; % 1-12 are 2019 recordings (eeeeeecx), 13-20 are 2020:
@@ -45,7 +45,7 @@ for reg = startRec:recs
     end
 end
 
-xlsFileName = '2019_2020_intra_ch_CLI.xlsx';
+xlsFileName = '2019_2020_intra_ch_CLI_128_64.xlsx';
 
 Excel = actxserver('excel.application');
 WB = Excel.Workbooks.Add;

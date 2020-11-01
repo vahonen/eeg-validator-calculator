@@ -20,7 +20,9 @@
 			"calculationType" : "'event'",
 			"alphaRange" : "[8 12]",
 			"thetaRange" : "[4 8]",
-			"freqStep" : "0.5"
+			"freqStep" : "0.5",
+			"windowLength" : "128",
+			"overlap" : "64"
 		}
 	}
 	
