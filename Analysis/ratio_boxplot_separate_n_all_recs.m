@@ -1,4 +1,7 @@
-%f = 0:0.5:49.5;
+% dependency:
+%   boxplotGroup.m
+%   https://se.mathworks.com/matlabcentral/fileexchange/74437-boxplotgroup
+
 close all
 
 addpath('./Services');
@@ -8,18 +11,17 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64.mat'); %nBackCalculator
+load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64_new.mat'); %nBackCalculator
 
 recs = numel(nBackCalculator); % all recordings
 % recs = 12; % 1-12 are 2019 recordings (eeeeeecx), 13-20 are 2020:
 % 13-18 recordings (cceeeeeexx....), 20 chs (6 EEG)
 % 19-20 (eee...ex), 20 chs (19 EEG)
 
-%chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'};
-chList = {'Fp1', 'Fp2'};
-
+chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'};
+%chList = {'Fp1', 'Fp2'};
+xOutlier = {};
 channelNbr = [];
-allResults = {};
 
 for kk = 1:numel(chList)
     targetChannel = chList(kk);
@@ -50,8 +52,10 @@ for kk = 1:numel(chList)
                 x = vertcat(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).channel(channelNbr(reg)).event(:).result);
             end
             
-            x = rmoutliers(x, 'median');
+            xOutlier{reg, n} = x(isoutlier(x));
+            x = rmoutliers(x, 'median'); % remove outliers % CHECK!
             cli{reg, n} = x;
+            
         end
     end
     
@@ -88,10 +92,15 @@ for kk = 1:numel(chList)
    
    % note indexing for M: 2 -> 1-back, 3 -> 2-back, ...
    % last color is "dummy", needed for gap between groups
-   figure
-   boxplotGroup({M{2} M{4} M{3}}, 'PrimaryLabels', {'1' '3' '2'}, 'secondaryLabels', regLabels, 'plotstyle', 'compact', 'Colors', ['r' 'k' 'b' 'y']);
-   title(targetChannel);
+   if (mod(kk-1,2) == 0)
+    figure
+   end
    
-end % for jj = numel(targetChList)
+   subplot(2,1,mod(kk-1,2)+1)
+   %subplot(6,1,kk)
+   boxplotGroup({M{2} M{3} M{4}}, 'PrimaryLabels', {'1' '2' '3'}, 'secondaryLabels', regLabels, 'plotstyle', 'compact', 'Colors', ['r' 'k' 'b' 'c']);
+   title(['P_{\theta} / P_{\alpha} (' + string(targetChannel) + ')']);
+   
+end % for kk = 1:numel(chList)
 
 toc

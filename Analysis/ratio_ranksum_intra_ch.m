@@ -1,7 +1,3 @@
-%f = 0:0.5:49.5;
-nr = 1;
-pl = 1;
-
 addpath('./Services');
 addpath('./Domain');
 addpath('./Algorithms');
@@ -9,7 +5,7 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64.mat'); %nBackCalculator
+load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64_new.mat'); %nBackCalculator
 
 recs = numel(nBackCalculator); % all recordings
 % recs = 12; % 1-12 are 2019 recordings (eeeeeecx), 13-20 are 2020:
@@ -21,31 +17,35 @@ startCh = 1; % CHECK!
 
 p = zeros(recs, 6, 6);
 h = zeros(size(p));
+tf = {};
 
 for reg = startRec:recs
     
     chCount(reg) = numel(nBackCalculator(reg).nBackResults.algorithm(1).nBack(2).channel);
     for ch = startCh:startCh+chCount(reg)-1
         for n = 1:4 % 1..4-back
-            nBackResult{n} = vertcat(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n+1).channel(ch).event(:).result);
+            res = vertcat(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n+1).channel(ch).event(:).result);
+            %nBackResult{n} = res;
+            [res, tf{reg, n}] = rmoutliers(res, 'median'); % CHECK!
+            nBackResult{n} = res;
         end
             
-        [p(reg, ch, 1), ~, stats] = ranksum(nBackResult{1}, nBackResult{2}, 'tail', 'both'); 
+        [p(reg, ch, 1), ~, stats] = ranksum(nBackResult{1}, nBackResult{2}, 'tail', 'left'); 
         h(reg, ch, 1) =  sign(stats.zval);
-        [p(reg, ch, 2), ~, stats] = ranksum(nBackResult{1}, nBackResult{3}, 'tail', 'both');
+        [p(reg, ch, 2), ~, stats] = ranksum(nBackResult{1}, nBackResult{3}, 'tail', 'left');
         h(reg, ch, 2) =  sign(stats.zval);
-        [p(reg, ch, 3), ~, stats] = ranksum(nBackResult{1}, nBackResult{4}, 'tail', 'both');
+        [p(reg, ch, 3), ~, stats] = ranksum(nBackResult{1}, nBackResult{4}, 'tail', 'left');
         h(reg, ch, 3) =  sign(stats.zval);
-        [p(reg, ch, 4), ~, stats] = ranksum(nBackResult{2}, nBackResult{3}, 'tail', 'both');
+        [p(reg, ch, 4), ~, stats] = ranksum(nBackResult{2}, nBackResult{3}, 'tail', 'left');
         h(reg, ch, 4) =  sign(stats.zval);
-        [p(reg, ch, 5), ~, stats] = ranksum(nBackResult{2}, nBackResult{4}, 'tail', 'both'); 
+        [p(reg, ch, 5), ~, stats] = ranksum(nBackResult{2}, nBackResult{4}, 'tail', 'left'); 
         h(reg, ch, 5) =  sign(stats.zval);
-        [p(reg, ch, 6), ~, stats] = ranksum(nBackResult{3}, nBackResult{4}, 'tail', 'both');
+        [p(reg, ch, 6), ~, stats] = ranksum(nBackResult{3}, nBackResult{4}, 'tail', 'left');
         h(reg, ch, 6) =  sign(stats.zval);
     end
 end
 
-xlsFileName = '2019_2020_intra_ch_CLI_128_64.xlsx';
+xlsFileName = '2019_2020_intra_ch_t_a_p_ratio_128_64_tail_left.xlsx';
 
 Excel = actxserver('excel.application');
 WB = Excel.Workbooks.Add;
@@ -88,3 +88,5 @@ end
 WB.SaveAs(fullfile(pwd, xlsFileName));
 WB.Close();
 Excel.Quit();
+
+toc % stop stopwatch timer
