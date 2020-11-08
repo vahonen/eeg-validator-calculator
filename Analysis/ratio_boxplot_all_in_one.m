@@ -22,7 +22,7 @@ chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'};
 
 channelNbr = [];
 allResults = {};
-cliMedian = zeros(numel(chList),5);
+ratioMedian = zeros(numel(chList),5);
 figure
 
 for kk = 1:numel(chList)
@@ -52,7 +52,7 @@ for kk = 1:numel(chList)
             %if (~ismember(reg, [4 6 15 16])) % remove recs 4,6,15,16 => these have very high values compared to the rest
                 if (~isempty(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).channel) && channelNbr(reg) > 0)
                     y = horzcat(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).channel(channelNbr(reg)).event(:).result);
-                    y = rmoutliers(y, 'median'); % CHECK!
+                    %y = rmoutliers(y, 'median'); % CHECK!
                     x = [x y];
                 end
             %end
@@ -68,27 +68,33 @@ for kk = 1:numel(chList)
         if (~isempty(allResults{kk,n}))
             res = allResults{kk,n};
             
-            %res = rmoutliers(res, 'median'); % CHECK!
-            cliMedian(kk,n) = median(res);
+            res = rmoutliers(res, 'median'); % CHECK!
+            ratioMedian(kk,n) = median(res);
             xOutliers{kk,n} = res(isoutlier(res));
             
             x = [x ; res'];
             
-            valMedian = sprintf('%.2f',cliMedian(kk,n));
-            nBack = strcat(num2str(n-1), '-back (m=' , valMedian, ')');
+            valMedian = sprintf('%.2f',ratioMedian(kk,n));
+            nBack = strcat(num2str(n-1), '-back (' , valMedian, ')');
             gTmp = repmat(nBack, numel(res), 1);
             g = [g ; gTmp];
         end
     end
     
     count=numel(chList);
+    % two plots per figure
+    %if (kk > 1 && mod(kk-1, 2) == 0)
+    %    figure
+    %end
+    
+    %subplot(2,1,mod(kk-1, 2)+1)
     
     subplot(ceil(count/2),2,kk)
-    boxplot(x, g)
+    boxplot(x, g, 'OutlierSize', 2, 'Symbol', 'ro')
     %boxplot(x, g, 'PlotStyle', 'compact')
-    title(['P_{\theta} / P_{\alpha} (' + string(targetChannel) + ' , all recordings combined)']);
-    %sgtitle(['P_{\theta} / P_{\alpha}, all recordings combined)']);
-    %ylim([0 30]);
+    title(['P_{\theta} / P_{\alpha} (' + string(targetChannel) + ')']);
+   
+    ylim([0 30]);
     
     %subplot(2,2,kk+2)
     %histogram(x)
@@ -104,22 +110,24 @@ for kk = 1:numel(chList)
     
     
 end % for kk = numel(targetChList)
+%sgtitle(['P_{\theta} / P_{\alpha} (all recordings combined)']);
 
+% for kk = 1:numel(chList)
+%     figure
+%     for n = 2:5
+%         subplot(2,2,n-1)
+%         histogram(allResults{kk,n});
+%         title([num2str(n-1)+"-back"]);
+%     end
+%     sgtitle(['P_{\theta} / P_{\alpha} (' + string(chList{kk}) + ', all recordings combined)']);
+%     
+% end
 
-for kk = 1:numel(chList)
-    figure
-    for n = 2:5
-        subplot(2,2,n-1)
-        histogram(allResults{kk,n});
-        title([num2str(n-1)+"-back"]);
-    end
-    sgtitle(['P_{\theta} / P_{\alpha} (' + string(chList{kk}) + ', all recordings combined)']);
-    
-end
+vNames = {'n1', 'n2', 'n3', 'n4'};
+ratioMedianTable = array2table(ratioMedian(:,2:5), 'VariableNames', vNames, 'RowNames', chList)
 
-cliMedian
-nVsN = {'n1vsn2', 'n1vsn3', 'n1vsn4', 'n2vsn3', 'n2vsn4', 'n3vsn4'};
-pTable = array2table(p, 'VariableNames', nVsN, 'RowNames', chList)
+vNames = {'n1vsn2', 'n1vsn3', 'n1vsn4', 'n2vsn3', 'n2vsn4', 'n3vsn4'};
+pTable = array2table(p, 'VariableNames', vNames, 'RowNames', chList)
 
 %xOutliers
 toc

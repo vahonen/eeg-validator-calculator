@@ -14,7 +14,7 @@
 	
 	
 	{
-		"calculator" : "AlgCliCalculator",
+		"calculator" : "AlgPowerRatioCalculator",
 		"parameters" : {
 			"type" : "'theta_Power/alpha_Power (theta: 4-8 Hz, alpha: 8-12 Hz)'",
 			"calculationType" : "'event'",

@@ -11,7 +11,7 @@ load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64_new.mat'); %nBackCal
 
 recs = numel(nBackCalculator); % all recordings
 
-%recs = 20;
+%recs = 5;
 startRec = 1;
 
 
@@ -92,7 +92,9 @@ for low = 2:4 % 1-back ... 3-back
         end
         
         count = count + 1;
-        legend
+       
+        lgd = legend;
+        lgd.Location = 'southeast';
         title([num2str(low-1)+"vs"+num2str(high-1)]);
     end
 end
