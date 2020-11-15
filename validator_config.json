@@ -2,7 +2,7 @@
 "zeroTouch" : true,
 "logfile" : "logfile.txt",
 "timezone" : "Europe/Helsinki",
-"cleanedFolder" : "Cleaned",
+"cleanedFolder" : "CleanedX",
 "dropXChannels" : false,
 "epochTime" : 1,
 "overlapPercent" : 50,

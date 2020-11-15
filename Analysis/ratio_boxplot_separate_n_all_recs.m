@@ -19,7 +19,7 @@ recs = numel(nBackCalculator); % all recordings
 % 19-20 (eee...ex), 20 chs (19 EEG)
 
 chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'};
-chList = {'Fp1'};
+%chList = {'Fp1'};
 xOutlier = {};
 channelNbr = [];
 
@@ -56,10 +56,10 @@ for kk = 1:numel(chList)
             origCli{reg, n} = x;
             xOutlier{reg, n} = x(isoutlier(x));
             x = rmoutliers(x, 'median'); % remove outliers % CHECK!
-            cli{reg, n} = x;
-            
+            cli{reg, n} = x;            
         end
     end
+    
     
     M = {};
     for n = 1:5
@@ -97,11 +97,24 @@ for kk = 1:numel(chList)
    if (mod(kk-1,2) == 0)
     figure
    end
-   
+   yMax = [60, 60, 60];
    subplot(2,1,mod(kk-1,2)+1)
    %subplot(6,1,kk)
    boxplotGroup({M{2} M{3} M{4} M{5}}, 'PrimaryLabels', {'1' '2' '3' '4'}, 'secondaryLabels', regLabels, 'plotstyle', 'compact', 'Colors', ['r' 'k' 'b' 'g' 'y']);
    title(['P_{\theta} / P_{\alpha} (' + string(targetChannel) + ')']);
+   ylim([0 yMax(ceil(kk/2))]);
+   
+   % plot outlier thresholds for combined recordings -->
+   hold on
+   colors = ['r' 'k' 'b' 'g'];
+   
+   for n = 2:5
+    th = max(rmoutliers(vertcat(origCli{:, n})));
+    yline(th, ['--' colors(n-1)]);
+    hold on
+   end
+   hold off 
+   % <-- plot outlier thresholds for combined recording
    
 end % for kk = 1:numel(chList)
 

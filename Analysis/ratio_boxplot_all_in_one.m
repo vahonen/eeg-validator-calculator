@@ -67,10 +67,11 @@ for kk = 1:numel(chList)
     for n = 1:5
         if (~isempty(allResults{kk,n}))
             res = allResults{kk,n};
+            xOutliers{kk,n} = res(isoutlier(res));
             
             res = rmoutliers(res, 'median'); % CHECK!
             ratioMedian(kk,n) = median(res);
-            xOutliers{kk,n} = res(isoutlier(res));
+            
             
             x = [x ; res'];
             
@@ -129,5 +130,12 @@ ratioMedianTable = array2table(ratioMedian(:,2:5), 'VariableNames', vNames, 'Row
 vNames = {'n1vsn2', 'n1vsn3', 'n1vsn4', 'n2vsn3', 'n2vsn4', 'n3vsn4'};
 pTable = array2table(p, 'VariableNames', vNames, 'RowNames', chList)
 
-%xOutliers
+xx=[];
+for n =2:5
+for kk=1:numel(chList)
+    xx(kk, n-1) = min(xOutliers{kk,n});
+    end
+end
+
+    
 toc
