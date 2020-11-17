@@ -20,7 +20,7 @@ useInfoFileLabels | true, false | **true**: read channel labels from .info file 
 Key | Value range | Description
 ------------ | ------------- | ---------------
 zeroTouch | true, false | **true**: no user intervention needed, validator_config.json settings used, **false**: user intervention needed
-logfile | *character string* | nNme for the file to save Matlab log
+logfile | *character string* | The name for the file for storing Matlab log
 sourceFolder | *character string* | The folder from where EDF recordings for the metrics calculation are read
 resultsFolder | *character string* | The folder where the calculated metrics are stored
 timezone | *character string* | IANA specified timezone (e.g. Europe/Helsinki)
