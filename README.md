@@ -7,7 +7,7 @@ zeroTouch | true, false | **true**: No user intervention needed, validator_confi
 logfile | *character string* | The name for the file for storing Matlab log
 timezone | *character string* | IANA specified timezone (e.g. Europe/Helsinki)
 cleanedFolder | *character string* | The Folder where cleaned signals are to be stored
-dropXchannels | true, false | **true**: 'x' marked channels in Excel are taken in, **false**: 'x' marked channels are dropped
+dropXchannels | true, false | **true**: 'x' marked channels in Excel are taken in (even though not processed), **false**: 'x' marked channels are dropped
 epochTime | *positive number* | Signal segment (epoch) length in seconds, for validating
 overlapPercent | *positive number* | Signal segment (epoch) overlap, for validating
 setArtefactsToZero | true, false | **true**: artefactual epochs are zeroed, **false**: artefactual epochs are not zeroed
