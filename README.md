@@ -3,7 +3,7 @@
 ### validator_config.json
 Key | Value range | Description
 ------------ | ------------- | ---------------
-zeroTouch | true, false | **true**: No user intervention needed, validator_config.json settings used, **false**: user intervention needed (Excel and configuration file will be asked)
+zeroTouch | true, false | **true**: No user intervention needed, validator_config.json settings and first found Excel in working directory are used, **false**: user intervention needed (configuration file and Excel will be asked)
 logfile | *character string* | The name for the file for storing Matlab log
 timezone | *character string* | IANA specified timezone (e.g. Europe/Helsinki)
 cleanedFolder | *character string* | The Folder where cleaned signals are to be stored
