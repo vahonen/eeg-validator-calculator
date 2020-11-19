@@ -9,7 +9,7 @@ timezone | *character string* | IANA specified timezone (e.g. Europe/Helsinki)
 cleanedFolder | *character string* | The Folder where cleaned signals are to be stored
 dropXchannels | true, false | **true**: 'x' marked channels in Excel are taken in (even though not processed), **false**: 'x' marked channels are dropped
 epochTime | *positive number* | Signal segment (epoch) length in seconds, for validating
-overlapPercent | *positive number* | Signal segment (epoch) overlap, for validating
+overlapPercent | 0..100 | Signal segment (epoch) overlap percentage, for validating (value 100 is not recommended)
 setArtefactsToZero | true, false | **true**: Artefactual epochs are zeroed, **false**: Artefactual epochs are not zeroed
 overwriteCleanedRecordings | true, false | **true**: cleaned recordings are overwritten, **false**: Cleaned recordings are not overwritten (file names postfixed with date and time)
 createXmlAnnotations.artefacts | true, false | **true**: Create EDFbrowser compatible XML annotations for artefacts, **false**: Do not create XML annotations
