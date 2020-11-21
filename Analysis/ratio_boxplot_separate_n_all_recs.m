@@ -112,8 +112,9 @@ for kk = 1:numel(chList)
    for n = 2:5
     yy = vertcat(origCli{:, n}); % combined "n"s
     maxValueIn(kk,n-1) = max(rmoutliers(yy));
-    madThreshold(kk,n-1) = median(yy)+3*(-1/(sqrt(2)*erfcinv(3/2))) * median(abs(yy-median(yy)));
-    yline(madThreshold(kk,n-1), ['--' colors(n-1)]);
+    madThresholdUpper(kk,n-1) = median(yy)+3*(-1/(sqrt(2)*erfcinv(3/2))) * median(abs(yy-median(yy)));
+    madThresholdLower(kk,n-1) = median(yy)-3*(-1/(sqrt(2)*erfcinv(3/2))) * median(abs(yy-median(yy)));
+    yline(madThresholdUpper(kk,n-1), ['--' colors(n-1)]);
     
     hold on
    end

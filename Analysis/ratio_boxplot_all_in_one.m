@@ -18,8 +18,6 @@ recs = numel(nBackCalculator); % all recordings
 %chList = {'Fp1', 'Fp2'};
 chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'};
 
-%chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1'};
-
 channelNbr = [];
 allResults = {};
 ratioMedian = zeros(numel(chList),5);
@@ -107,6 +105,14 @@ for kk = 1:numel(chList)
     [p(kk,4), h(kk,4)] = ranksum(allResults{kk,3}, allResults{kk,4}, 'tail', 'left');
     [p(kk,5), h(kk,5)] = ranksum(allResults{kk,3}, allResults{kk,5}, 'tail', 'left');
     [p(kk,6), h(kk,6)] = ranksum(allResults{kk,4}, allResults{kk,5}, 'tail', 'left');
+
+%     just for testing the t-test... 
+%     [h(kk,1), p(kk,1)] = ttest2(allResults{kk,2}, allResults{kk,3}, 'tail', 'left');
+%     [h(kk,2), p(kk,2)] = ttest2(allResults{kk,2}, allResults{kk,4}, 'tail', 'left');
+%     [h(kk,3), p(kk,3)] = ttest2(allResults{kk,2}, allResults{kk,5}, 'tail', 'left');
+%     [h(kk,4), p(kk,4)] = ttest2(allResults{kk,3}, allResults{kk,4}, 'tail', 'left');
+%     [h(kk,5), p(kk,5)] = ttest2(allResults{kk,3}, allResults{kk,5}, 'tail', 'left');
+%     [h(kk,6), p(kk,6)] = ttest2(allResults{kk,4}, allResults{kk,5}, 'tail', 'left');
     
     
     
