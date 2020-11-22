@@ -30,17 +30,17 @@ for reg = startRec:recs
             nBackResult{n} = res;
         end
             
-        [p(reg, ch, 1), ~, stats] = ranksum(nBackResult{1}, nBackResult{2}, 'tail', 'left'); 
+        [p(reg, ch, 1), ~, stats] = ranksum(nBackResult{1}, nBackResult{2}, 'tail', 'both'); 
         h(reg, ch, 1) =  sign(stats.zval);
-        [p(reg, ch, 2), ~, stats] = ranksum(nBackResult{1}, nBackResult{3}, 'tail', 'left');
+        [p(reg, ch, 2), ~, stats] = ranksum(nBackResult{1}, nBackResult{3}, 'tail', 'both');
         h(reg, ch, 2) =  sign(stats.zval);
-        [p(reg, ch, 3), ~, stats] = ranksum(nBackResult{1}, nBackResult{4}, 'tail', 'left');
+        [p(reg, ch, 3), ~, stats] = ranksum(nBackResult{1}, nBackResult{4}, 'tail', 'both');
         h(reg, ch, 3) =  sign(stats.zval);
-        [p(reg, ch, 4), ~, stats] = ranksum(nBackResult{2}, nBackResult{3}, 'tail', 'left');
+        [p(reg, ch, 4), ~, stats] = ranksum(nBackResult{2}, nBackResult{3}, 'tail', 'both');
         h(reg, ch, 4) =  sign(stats.zval);
-        [p(reg, ch, 5), ~, stats] = ranksum(nBackResult{2}, nBackResult{4}, 'tail', 'left'); 
+        [p(reg, ch, 5), ~, stats] = ranksum(nBackResult{2}, nBackResult{4}, 'tail', 'both'); 
         h(reg, ch, 5) =  sign(stats.zval);
-        [p(reg, ch, 6), ~, stats] = ranksum(nBackResult{3}, nBackResult{4}, 'tail', 'left');
+        [p(reg, ch, 6), ~, stats] = ranksum(nBackResult{3}, nBackResult{4}, 'tail', 'both');
         h(reg, ch, 6) =  sign(stats.zval);
     end
 end
