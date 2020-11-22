@@ -155,7 +155,7 @@ for r = 1:numel(chList)
                 figure
             end
             
-            subplot(floor(maxplots/2),2,mod(plotcounter, maxplots)+1)
+            subplot(ceil(maxplots/2),2,mod(plotcounter, maxplots)+1)
             boxplot(x, g, 'OutlierSize', 2, 'Symbol', 'ro')
             plotcounter = plotcounter + 1;
             title([string(chList(r)) + '-' + string(chList(c))]);
