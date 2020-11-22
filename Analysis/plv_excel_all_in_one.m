@@ -32,6 +32,8 @@ for ii = 1:numel(origChList)
 end
 % remove non-EEG channels
 
+%chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'}; % common subset, manually
+
 origResults = {};
 cleanedResults = {};
 p = [];
@@ -45,7 +47,6 @@ for r = 1:numel(chList)
     for c = 1:numel(chList)
         modulatingChannel = chList(r);
         modulatedChannel = chList(c);
-        
         
         rNames(end + 1) = strcat(modulatingChannel, modulatedChannel);
         for n = 1:5
@@ -127,3 +128,38 @@ WB.SaveAs(fullfile(pwd, xlsFileName));
 WB.Close();
 Excel.Quit();
 
+% boxplot
+
+plotcounter = 0;
+maxplots = 6;
+for r = 1:numel(chList)
+    for c = r:numel(chList)
+        plvMedian=[];
+        x=[];
+        g=[];
+        
+        for n = 2:5 % 1-back..4-back
+            res = cleanedResults{r,c,n};
+            if (~isempty(res) && r ~= c)
+                plvMedian(r,c,n) = median(res);
+                x = [x ; res'];
+                
+                valMedian = sprintf('%.2f',plvMedian(r,c,n));
+                nBack = strcat(num2str(n-1), '-back (' , valMedian, ')');
+                gTmp = repmat(nBack, numel(res), 1);
+                g = [g ; gTmp];
+            end
+        end
+        if (r ~= c)
+            if (mod(plotcounter, maxplots) == 0)
+                figure
+            end
+            
+            subplot(floor(maxplots/2),2,mod(plotcounter, maxplots)+1)
+            boxplot(x, g, 'OutlierSize', 2, 'Symbol', 'ro')
+            plotcounter = plotcounter + 1;
+            title([string(chList(r)) + '-' + string(chList(c))]);
+            sgtitle(strcat("PLV ", strrep(matFile,'_','-')));
+        end
+    end
+end
