@@ -87,7 +87,7 @@ end
 vNames = {'n1vsn2', 'n1vsn3', 'n1vsn4', 'n2vsn3', 'n2vsn4', 'n3vsn4'};
 pTable = array2table(pValues, 'VariableNames', vNames, 'RowNames', rNames);
 
-xlsFileName = strcat(matFile, '.xlsx');
+xlsFileName = strcat(matFile, '_all', '.xlsx');
 
 Excel = actxserver('excel.application');
 WB = Excel.Workbooks.Add;
