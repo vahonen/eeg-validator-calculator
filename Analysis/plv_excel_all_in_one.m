@@ -8,7 +8,7 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-matFile = 'nback_object_2-4';
+matFile = 'nback_object_19ch_4-6'; % without .mat extension!
 dirName = './ResultsPLV';
 
 fileName = strcat(matFile, '.mat');
@@ -23,16 +23,21 @@ recs = numel(nBackCalculator); % all recordings
 chList = {};
 origChList = nBackCalculator(1).nBackResults.algorithm(1).nBack(2).channelLabels;
 
+% remove non-EEG channels
 nonEEG = {'EOG', 'ECG', 'Ch', 'EXT'};
-
 for ii = 1:numel(origChList)
     if (~contains(origChList{ii}, nonEEG, 'IgnoreCase',true))
-        chList{end+1} = origChList{ii};
+        chList{end+1} = origChList{ii}; % add automatically EEG chs
     end
 end
-% remove non-EEG channels
 
-%chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'}; % common subset, manually
+%chList = {'Fp1', 'Fp2', 'C3', 'C4', 'O1', 'O2'}; % common subset
+%chList = {'Fp1', 'Fp2', 'F3', 'Fz', 'F4', 'P3', 'Pz', 'P4'}; % a subset of 19-channel setup
+
+% channels in 19-ch setup:
+%{'P7'}    {'P4'}    {'Cz'}    {'Pz'}    {'P3'}    {'P8'}    {'O1'}    {'O2'}    
+%{'T8'}    {'F8'}    {'C4'}    {'F4'}    {'Fp2'}    {'Fz'}    {'C3'}
+%{'F3'}    {'Fp1'}    {'T7'}    {'F7'}    {'EXT'}
 
 origResults = {};
 cleanedResults = {};
