@@ -42,7 +42,12 @@ for kk = 1:matCount
     % 19-20 (eee...ex), 20 chs (19 EEG)
     
     chList = {};
-    origChList = nBackCalculator(1).nBackResults.algorithm(1).nBack(2).channelLabels;
+    origChList = {};
+    
+    % loop through recordings to gather channel list
+    for ii = 1:recs
+        origChList = union(origChList, nBackCalculator(ii).nBackResults.algorithm(1).nBack(2).channelLabels);
+    end
     
     % remove non-EEG channels
     nonEEG = {'EOG', 'ECG', 'Ch', 'EXT'};
@@ -74,7 +79,7 @@ for kk = 1:matCount
             modulatingChannel = chList(r);
             modulatedChannel = chList(c);
             
-            rNames(end + 1) = strcat(modulatingChannel, modulatedChannel);
+            rNames(end + 1) = strcat(modulatingChannel, '-', modulatedChannel);
             for n = 1:5
                 x = [];
                 for reg = 1:recs
