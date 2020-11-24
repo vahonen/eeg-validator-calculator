@@ -31,6 +31,7 @@ WS = WB.Worksheets;
 matCount = numel(matList);
 %matCount = 3; % for testing
 
+pTable = {};
 for kk = 1:matCount
     load(fullfile(matList(kk).folder, matList(kk).name)); %nBackCalculator
     
@@ -71,7 +72,7 @@ for kk = 1:matCount
     h = [];
     pValues = [];
     count = 1;
-    pTable = table;
+   
     rNames = {};
     
     for r = 1:numel(chList)
@@ -117,7 +118,8 @@ for kk = 1:matCount
     end
     
     vNames = {'n1vsn2', 'n1vsn3', 'n1vsn4', 'n2vsn3', 'n2vsn4', 'n3vsn4'};
-    pTable = array2table(pValues, 'VariableNames', vNames, 'RowNames', rNames);
+    pTable{kk} = table;
+    pTable{kk} = array2table(pValues, 'VariableNames', vNames, 'RowNames', rNames);
         
     fprintf('Building Excel: %s, sheet: %s (%d/%d)\n', xlsFileName, matFile, kk, matCount);
     
