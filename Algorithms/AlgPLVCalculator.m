@@ -1,7 +1,7 @@
-classdef AlgPacCalculator < CalculationAlgorithm
+classdef AlgPLVCalculator < CalculationAlgorithm
     properties
-        name = 'Phase-Amplitude Coupling calculator'
-        algName = 'AlgPacCalculator'
+        name = 'Phase Locking Value calculator'
+        algName = 'AlgPLVCalculator'
         type = ''
         calculationType = ''
         lowFreqRange
@@ -11,7 +11,7 @@ classdef AlgPacCalculator < CalculationAlgorithm
     end
     
     methods
-        function this = AlgPacCalculator(type, calculationType, lowFreqRange, highFreqRange, transBandWidth, maxAllowedDev)
+        function this = AlgPLVCalculator(type, calculationType, lowFreqRange, highFreqRange, transBandWidth, maxAllowedDev)
             this.type = type;
             this.calculationType = calculationType;
             this.lowFreqRange = lowFreqRange;
@@ -59,7 +59,7 @@ classdef AlgPacCalculator < CalculationAlgorithm
             % high freq:
             if (self.highFreqRange(1,2) > sampleRate/2) % high pass (for high freq)
                 frequencyBandEdges = [max(0, self.highFreqRange(1,1) - self.transBandWidth), self.highFreqRange(1,1)];
-                [n2,fo2,ao2,w2] = firpmord(frequencyBandEdges, [0, 1], self.maxAllowedDev(2:3), sampleRate);
+                [n1,fo2,ao2,w2] = firpmord(frequencyBandEdges, [0, 1], self.maxAllowedDev(2:3), sampleRate);
                 fprintf('# High pass (high) [%d (%d)] \n', self.highFreqRange(1,1), self.highFreqRange(1,2));
             else % band pass (for high freq)
                 frequencyBandEdges = [max(0, self.highFreqRange(1,1) - self.transBandWidth), self.highFreqRange(1,1), ...
@@ -86,17 +86,18 @@ classdef AlgPacCalculator < CalculationAlgorithm
                         %sampleRate = recording.channel(r).sampleRate;
                         pac = [];
                         
-                        xLow = filtfilt(bLow, 1, recording.channel(r).samples);
-                        % phase for modulating signal
-                        phaseXLow = angle(hilbert(xLow)); %
+                        y1 = filtfilt(bLow, 1, recording.channel(r).samples);
                         
-                        yHigh = filtfilt(bHigh, 1, recording.channel(c).samples);
+                        % phase for modulating signal
+                        phase_y1 = angle(hilbert(y1)); %
+                        
+                        y2 = filtfilt(bHigh, 1, recording.channel(c).samples);
                         % envelope
-                        yHighEnv = abs(hilbert(yHigh));
-                        yHighLow = filtfilt(bLow, 1, yHighEnv);
+                        %yHighEnv = abs(hilbert(yHigh));
+                        %yHighLow = filtfilt(bLow, 1, yHighEnv);
                         
                         % phase for envelope amplitude of modulated (high freq) signal
-                        phaseYHighLow = angle(hilbert(yHighLow)); %
+                        phase_y2 = angle(hilbert(y2)); %
                         
                         for ev = 1:numel(recording.channel(r).validEvents)
                             if (recording.channel(r).validEvents(ev).n == n ...
@@ -105,14 +106,38 @@ classdef AlgPacCalculator < CalculationAlgorithm
                                 % valid for current event segment
                                 range = recording.channel(r).validEvents(ev).sampleRange;
                                 
+%                                 plot(recording.channel(r).samples(range(1,1):range(1,2))),pause;
+%                                 figure
+%                                 plot(xLow(range(1,1):range(1,2))),pause;
+%                                 figure
+%                                 plot(unwrap(phaseXLow(range(1,1):range(1,2)))),pause;
+%                                 figure
+%                                 plot(yHigh(range(1,1):range(1,2))),pause;
+%                                 figure
+%                                 plot(yHighLow(range(1,1):range(1,2))),pause;
+%                                 figure
+%                                 plot(unwrap(phaseYHighLow(range(1,1):range(1,2)))),pause;
+                                
                                 % calculate PAC value per events
                                 tmpPac = 0;
                                 %for jj=1:min(numel(xSamples), numel(ySamples))
-                                for jj=range(1,1):range(1,2)
-                                    tmpPac = tmpPac + exp(1i*(phaseXLow(jj)-phaseYHighLow(jj)));
-                                end
-                                tmpPac = 1/(range(1,2)-range(1,1)+1) * abs(tmpPac);
                                 
+                                tmp = zeros(range(1,2) - range(1,1) + 1, 1);
+                                
+                                for jj=range(1,1):range(1,2)
+                                    tmpPac = tmpPac + exp(1i*(phase_y1(jj)-phase_y2(jj)));
+                                    
+                                    %tmp(jj-range(1,1)+1) = exp(1i*(phaseXLow(jj)-phaseYHighLow(jj)));
+                                end
+                                
+                                %figure
+                                %plot(angle(tmp)),pause;
+                                %hist(angle(tmp), 50);
+                                %sum(angle(tmp)),pause;
+                                %abs(tmpPac), abs(sum(tmp)), pause;
+                                
+                                tmpPac = 1/(range(1,2)-range(1,1)+1) * abs(tmpPac);
+                                %tmpPac = sum(angle(tmp));
                                 pac = [pac tmpPac];
                             end
                         end

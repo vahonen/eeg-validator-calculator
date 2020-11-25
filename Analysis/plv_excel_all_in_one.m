@@ -14,7 +14,7 @@ tic % start stopwatch timer
 plotBoxplots = false;
 
 % target excel file
-xlsFileName = 'plv_p_values_all_in_one.xlsx';
+xlsFileName = 'plv_p_values_all_in_one_2.xlsx';
 
 % source dir for reading .mat files
 dirName = './ResultsPLV';
@@ -85,8 +85,8 @@ for kk = 1:matCount
                 x = [];
                 for reg = 1:recs
                     labels = nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).channelLabels;
-                    [~, rx] = ismember(modulatingChannel, labels);
-                    [~, cx] =ismember(modulatedChannel, labels);
+                    [~, rx] = ismember(lower(modulatingChannel), lower(labels)); % case insensitive
+                    [~, cx] =ismember(lower(modulatedChannel), lower(labels)); %  case insensitive
                     
                     if (numel(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).result) > 0 && rx > 0 && cx > 0)
                         y = horzcat(nBackCalculator(reg).nBackResults.algorithm(1).nBack(n).result{rx,cx});
