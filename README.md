@@ -38,7 +38,7 @@ Excel file has to contain the following mandatory column headers:
 
 You can add any other (optional) columns as you like.
   
-All processed EDF files (without .edf extension) should be added to _filename_ columnn. The calculator searches named EDF files in the working directory and in its all sub-directories. In _channels_ column, EEG channels are marked with 'e', ECG channels with 'c' and any other channels with 'x'.
+All EDF files that are wanted to be processed should be added to _filename_ columnn (without .edf extension). The calculator searches the given EDF files in the working directory and in its all sub-directories. In _channels_ column, EEG channels should be marked with 'e', ECG channels with 'c' and any other channels with 'x'. The order of the channels is the same as it appears in the respective EDF file.
 
 Example:
 
