@@ -29,3 +29,18 @@ eventDelay | *positive number* | Metrics measurement interval end point, post to
 useInfoFileLabels | true, false | **true**: Read channel labels from .info file, **false**: Use channel labels extracted from EDF files
 savedObjectName | *character string* | Name for the file where the Matlab object containing the calculated metrics is stored
 overwriteSavedObject | true, false | **true**: The metrics object file is overwritten, **false**: The metrics object file is not overwritten (file names postfixed with date and time)
+
+## Excel file for Calculator
+
+Excel file has to contain the following mandatory column headers:
+* filename
+* channels
+
+You can add any other (optional) columns as you like.
+  
+All processed EDF files (without .edf extension) should be added to _filename_ columnn. The calculator searches named EDF files in the working directory and in its all sub-directories. In _channels_ column, EEG channels are marked with 'e', ECG channels with 'c' and any other channels with 'x'.
+
+Example:
+
+![Image of Yaktocat](https://i.ibb.co/MnmNPR2/data-excel.png)
+
