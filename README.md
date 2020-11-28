@@ -32,7 +32,7 @@ overwriteSavedObject | true, false | **true**: The metrics object file is overwr
 
 ## Excel file for Calculator
 
-Information on EDF files to be processed with the Calculator are listed (by the user) in Excel file that is read by the tool. Excel file has to contain the following mandatory column headers:
+Information on EDF files to be processed with Calculator are listed (by the user) in Excel file that is then read by the tool. Excel file has to contain the following mandatory column headers:
 * filename
 * channels
 
