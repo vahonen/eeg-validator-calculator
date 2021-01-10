@@ -115,7 +115,7 @@ for kk = 1:matCount
 
                 pValues(count, :) = squeeze(p(r,c,:))';
                 count = count + 1;
-            else % no matching channel pair in the current recording
+            else % no matching channel pair in any recording
                 p(r,c,1:6) = NaN;
                 h(r,c,1:6) = NaN;
                 pValues(count, 1:6) = NaN;
