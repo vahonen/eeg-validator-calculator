@@ -14,10 +14,11 @@ tic % start stopwatch timer
 plotBoxplots = false;
 
 % target excel file
-xlsFileName = 'plv_p_values_all_in_one_2.xlsx';
+xlsFileName = 'plv_p_values_all_in_one_2020T.xlsx';
 
 % source dir for reading .mat files
-dirName = './ResultsPLV';
+dirName = './ResultsPLV/ML2020';
+
 
 % <--
 
@@ -98,22 +99,28 @@ for kk = 1:matCount
                 cleanedResults{r,c,n} = rmoutliers(x, 'median');
             end
             
-            [p(r,c,1), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,3}, 'tail', 'both');
-            h(r, c, 1) =  sign(stats.zval);
-            [p(r,c,2), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,4}, 'tail', 'both');
-            h(r, c, 2) =  sign(stats.zval);
-            [p(r,c,3), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,5}, 'tail', 'both');
-            h(r, c, 3) =  sign(stats.zval);
-            [p(r,c,4), ~, stats] = ranksum(cleanedResults{r,c,3}, cleanedResults{r,c,4}, 'tail', 'both');
-            h(r, c, 4) =  sign(stats.zval);
-            [p(r,c,5), ~, stats] = ranksum(cleanedResults{r,c,3}, cleanedResults{r,c,5}, 'tail', 'both');
-            h(r, c, 5) =  sign(stats.zval);
-            [p(r,c,6), ~, stats] = ranksum(cleanedResults{r,c,4}, cleanedResults{r,c,5}, 'tail', 'both');
-            h(r, c, 6) =  sign(stats.zval);
-            
-            pValues(count, :) = squeeze(p(r,c,:))';
-            count = count + 1;
-            
+            if (~isempty(cleanedResults{r,c})) % correction added!!!!
+                [p(r,c,1), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,3}, 'tail', 'both');
+                h(r, c, 1) =  sign(stats.zval);
+                [p(r,c,2), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,4}, 'tail', 'both');
+                h(r, c, 2) =  sign(stats.zval);
+                [p(r,c,3), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,5}, 'tail', 'both');
+                h(r, c, 3) =  sign(stats.zval);
+                [p(r,c,4), ~, stats] = ranksum(cleanedResults{r,c,3}, cleanedResults{r,c,4}, 'tail', 'both');
+                h(r, c, 4) =  sign(stats.zval);
+                [p(r,c,5), ~, stats] = ranksum(cleanedResults{r,c,3}, cleanedResults{r,c,5}, 'tail', 'both');
+                h(r, c, 5) =  sign(stats.zval);
+                [p(r,c,6), ~, stats] = ranksum(cleanedResults{r,c,4}, cleanedResults{r,c,5}, 'tail', 'both');
+                h(r, c, 6) =  sign(stats.zval);
+
+                pValues(count, :) = squeeze(p(r,c,:))';
+                count = count + 1;
+            else % no matching channel pair in the current recording
+                p(r,c,1:6) = NaN;
+                h(r,c,1:6) = NaN;
+                pValues(count, 1:6) = NaN;
+                count = count + 1;
+            end % if
         end
     end
     

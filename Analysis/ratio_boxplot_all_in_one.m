@@ -8,7 +8,7 @@ addpath('./Filters');
 
 tic % start stopwatch timer
 
-load('./Results3/nback_object_2019_2020_intra_ch_cli_128_64.mat'); %nBackCalculator
+load('./Results/nback_object.mat'); %nBackCalculator
 
 recs = numel(nBackCalculator); % all recordings
 % recs = 12; % 1-12 are 2019 recordings (eeeeeecx), 13-20 are 2020:
