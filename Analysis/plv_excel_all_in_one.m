@@ -99,7 +99,7 @@ for kk = 1:matCount
                 cleanedResults{r,c,n} = rmoutliers(x, 'median');
             end
             
-            if (~isempty(cleanedResults{r,c})) % correction added!!!!
+            if (~(isempty(cleanedResults{r,c,2}) || isempty(cleanedResults{r,c,3}) || isempty(cleanedResults{r,c,4}) || isempty(cleanedResults{r,c,5}))) % correction added!!!!
                 [p(r,c,1), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,3}, 'tail', 'both');
                 h(r, c, 1) =  sign(stats.zval);
                 [p(r,c,2), ~, stats] = ranksum(cleanedResults{r,c,2}, cleanedResults{r,c,4}, 'tail', 'both');
